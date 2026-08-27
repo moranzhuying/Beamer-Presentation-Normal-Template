@@ -1,6 +1,7 @@
 % ================================================================
 % 02_more_theorem.tex — 更多定理环境帧
 % 覆盖: 引理/命题/推论/注记 + 其余全部编号环境 (全量测试)
+% 注意: Beamer 帧内容不可跨页, 环境较多时拆成多帧。
 % ================================================================
 
 \begin{frame}{更多定理环境}
@@ -15,13 +16,9 @@
   \begin{corollary}{}
     闭区间上的连续函数必有最大值与最小值。
   \end{corollary}
-
-  \begin{remark}{}
-    上述结论在度量空间框架下仍然成立。
-  \end{remark}
 \end{frame}
 
-\begin{frame}{其余定理环境 (全量测试)}
+\begin{frame}{公理与假设}
   \begin{axiom}{选择公理}{}
     任意非空集合族 $\{A_i\}_{i \in I}$ 存在选择函数。
   \end{axiom}
@@ -29,7 +26,9 @@
   \begin{hypothesis}{}{}
     假设 $f$ 在 $[a, b]$ 上 Riemann 可积。
   \end{hypothesis}
+\end{frame}
 
+\begin{frame}{元定理与准则}
   \begin{metatheorem}{}{}
     元定理: 所有定理均可被形式化验证。
   \end{metatheorem}
@@ -37,7 +36,9 @@
   \begin{criteria}{Cauchy 准则}{}
     数列收敛当且仅当它是 Cauchy 列。
   \end{criteria}
+\end{frame}
 
+\begin{frame}{约定与警示}
   \begin{convention}{}{}
     本书中 $\N$ 含 $0$。
   \end{convention}
@@ -61,10 +62,16 @@
   \begin{answer}
     不可导: 左右导数分别为 $-1$ 与 $1$, 不相等。
   \end{answer}
+\end{frame}
 
+\begin{frame}{例、注记与分析}
   \begin{example}{}{}
     $f(x) = x^2$ 在 $x = 0$ 处可导, 且 $f'(0) = 0$。
   \end{example}
+
+  \begin{remark}{}
+    上述结论在度量空间框架下仍然成立。
+  \end{remark}
 
   \begin{sketch}{}{}
     由导数的定义直接计算差商极限。

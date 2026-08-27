@@ -122,34 +122,33 @@
 }
 \setbeamertemplate{frametitle}[yukina]
 
-% -------- 4.2 footline: 进度条 + 章节导航 + 作者信息 + 页码 --------
-% 四要素 (自下而上):
-%   行 3 作者信息 : 作者 · 单位 · 日期 (均自动省略为空项), 右端页码 n/N;
-%   行 2 章节导航 : 所有 section 带编号水平排列, 当前节高亮, 点击跳转
-%                   (beamer 内置 \insertsectionnavigationhorizontal);
+% -------- 4.2 footline: 作者信息 (居中) + 进度条 --------
+% 结构 (自下而上):
+%   行 2 作者信息 : 作者 · 单位 · 日期 (均自动省略为空项) 居中, 右端页码 n/N;
 %   行 1 进度条   : 按 当前帧/总帧 比例填充主题色。
-% 导航符号 (前进/后退箭头等) 由 beamer 自动显示在右下角 (footline 上方)。
+% 说明: 页脚不再显示章节导航 (如需要可恢复 \insertsectionnavigationhorizontal)。
 \newif\ifyukina@shown
 \newcommand{\yukina@show}[1]{%
   \ifyukina@shown\ \textbar\ \fi
   #1\yukina@showntrue
 }
 \defbeamertemplate{footline}{yukina}{%
-  % -- 行 3: 作者 · 单位 · 日期 + 页码 --
-  \begin{beamercolorbox}[wd=\paperwidth,ht=2.4ex,dp=1ex,leftskip=8pt,rightskip=8pt]{footline}%
+  % -- 行 2: 作者 · 单位 · 日期 (居中) + 页码 (右) --
+  \begin{beamercolorbox}[wd=\paperwidth,ht=2.6ex,dp=1.2ex]{footline}%
     \usebeamerfont{footline}\usebeamercolor[fg]{footline}%
-    \yukina@shownfalse
-    \ifx\beamer@shortauthor\empty\else\yukina@show{\insertshortauthor}\fi
-    \ifcsname beamer@shortinstitute\endcsname
-      \ifx\beamer@shortinstitute\empty\else\yukina@show{\insertshortinstitute}\fi
-    \fi
-    \ifx\insertshortdate\empty\else\yukina@show{\insertshortdate}\fi
-    \hfill\insertframenumber/\inserttotalframenumber%
-  \end{beamercolorbox}%
-  % -- 行 2: 章节导航 (带编号) --
-  \begin{beamercolorbox}[wd=\paperwidth,ht=3.2ex,dp=1ex,leftskip=8pt,rightskip=8pt]{footline}%
-    \usebeamerfont{footline}\usebeamercolor[fg]{footline}%
-    \insertsectionnavigationhorizontal{\dimexpr\paperwidth-16pt}{}{}%
+    \hbox to \paperwidth{%
+      \hskip 8pt
+      \hfil
+      \yukina@shownfalse
+      \ifx\beamer@shortauthor\empty\else\yukina@show{\insertshortauthor}\fi
+      \ifcsname beamer@shortinstitute\endcsname
+        \ifx\beamer@shortinstitute\empty\else\yukina@show{\insertshortinstitute}\fi
+      \fi
+      \ifx\insertshortdate\empty\else\yukina@show{\insertshortdate}\fi
+      \hfil
+      \insertframenumber/\inserttotalframenumber
+      \hskip 8pt
+    }%
   \end{beamercolorbox}%
   % -- 行 1: 进度条 --
   \begin{beamercolorbox}[wd=\paperwidth,ht=2pt]{progress bar}%
@@ -162,24 +161,14 @@
   \end{beamercolorbox}%
 }
 \setbeamertemplate{footline}[yukina]
-\setbeamerfont{section in head/foot}{size=\scriptsize}
 
-% -------- 4.3 章节导航模板: 带编号 (编号由 beamer 提供 \insertsectionheadnumber) --------
-\defbeamertemplate{section in head/foot}{yukina}{%
-  \insertsectionheadnumber.\,\insertsectionhead%
-}
-\defbeamertemplate{section in head/foot shaded}{yukina}{%
-  \insertsectionheadnumber.\,\insertsectionhead%
-}
-\setbeamertemplate{section in head/foot}[yukina]
-\setbeamertemplate{section in head/foot shaded}[yukina]
-% 目录帧: 显示节编号 (1. 基础帧) 与小节编号 (1.1 基础排版)
+% -------- 4.3 目录帧编号 (1. 基础帧 / 1.1 基础排版) --------
 % 注意: section 用 sections numbered, subsection 需用 subsections numbered 才有编号。
 \setbeamertemplate{section in toc}[sections numbered]
 \setbeamertemplate{subsection in toc}[subsections numbered]
 
-% -------- 4.4 导航符号: 恢复 beamer 默认 (右下角前进/后退等图标) --------
-% 保持默认模板即可; 若想隐藏, 改为 \setbeamertemplate{navigation symbols}{}。
+% -------- 4.4 导航符号: 隐藏 (右下角图标不需要时) --------
+\setbeamertemplate{navigation symbols}{}
 
 % -------- 4.4 itemize: 沿用笔记模板符号 ◆ ▷ ∗ --------
 \setbeamertemplate{itemize item}{$\diamond$}

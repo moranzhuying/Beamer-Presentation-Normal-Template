@@ -75,7 +75,7 @@
 % -------- 2.2 基础排版宏 --------
 % 顶部色条 + 标题行
 \newcommand{\yukina@blockhead}[3]{%
-  \par\vskip\medskipamount
+  \par\vskip\smallskipamount
   \noindent{\color{\yukinaline{#2}}\rule{\textwidth}{1.8pt}}\par
   \vskip 3pt
   \noindent{\usebeamerfont{block title}\color{\yukinac{#2}}\textbf{#1}%
@@ -88,7 +88,7 @@
 }
 \newcommand{\yukina@blockbodyend}{%
   \end{beamercolorbox}%
-  \par\vskip\medskipamount
+  \par\vskip\smallskipamount
 }
 
 % -------- 2.3 编号环境批量定义 --------
@@ -149,7 +149,7 @@
 % -- 证明: 灰色细线, 自动加证毕符号 ∎ --
 % 注意: 上方已 \let\proof\relax, 故用 \newenvironment 而非 \renewenvironment。
 \newenvironment{proof}[1][证明]{%
-  \par\vskip\medskipamount
+  \par\vskip\smallskipamount
   \noindent{\color{\yukinaline{maingray}}\rule{\textwidth}{1.2pt}}\par
   \vskip 3pt
   \noindent{\usebeamerfont{block title}\color{\yukinac{maingray}}\textbf{#1}}\par
@@ -159,12 +159,12 @@
 }{%
   \hfill$\square$%
   \end{beamercolorbox}%
-  \par\vskip\medskipamount
+  \par\vskip\smallskipamount
 }
 
 % -- 回答: 灰色细线 --
 \newenvironment{answer}{%
-  \par\vskip\medskipamount
+  \par\vskip\smallskipamount
   \noindent{\color{\yukinaline{maingray}}\rule{\textwidth}{1.2pt}}\par
   \vskip 3pt
   \noindent{\usebeamerfont{block title}\color{\yukinac{maingray}}\textbf{回答}}\par
@@ -173,12 +173,12 @@
   \begin{beamercolorbox}[wd=\textwidth,leftskip=10pt,rightskip=10pt,sep=5pt]{block body}%
 }{%
   \end{beamercolorbox}%
-  \par\vskip\medskipamount
+  \par\vskip\smallskipamount
 }
 
 % -- 解答: 题后即答 (习题专用) --
 \newenvironment{solution}{%
-  \par\vskip\medskipamount
+  \par\vskip\smallskipamount
   \noindent{\color{\yukinaline{maingray}}\rule{\textwidth}{1.2pt}}\par
   \vskip 3pt
   \noindent{\usebeamerfont{block title}\color{\yukinac{maingray}}\textbf{解答}}\par
@@ -187,12 +187,12 @@
   \begin{beamercolorbox}[wd=\textwidth,leftskip=10pt,rightskip=10pt,sep=5pt]{block body}%
 }{%
   \end{beamercolorbox}%
-  \par\vskip\medskipamount
+  \par\vskip\smallskipamount
 }
 
 % -- 提示: 可选参数为标题, 黄底茶色 --
 \newenvironment{hint}[1][提示]{%
-  \par\vskip\medskipamount
+  \par\vskip\smallskipamount
   \noindent{\color{\yukinaline{mainyellow}}\rule{\textwidth}{1.2pt}}\par
   \vskip 3pt
   \noindent{\usebeamerfont{block title}\color{\yukinac{mainbrown}}\textbf{#1}}\par
@@ -201,7 +201,7 @@
   \begin{beamercolorbox}[wd=\textwidth,leftskip=10pt,rightskip=10pt,sep=5pt]{block body}%
 }{%
   \end{beamercolorbox}%
-  \par\vskip\medskipamount
+  \par\vskip\smallskipamount
 }
 
 % -------- 2.7 代码环境 (listings, 需放在 fragile 帧中) --------
@@ -216,8 +216,8 @@
 \lstnewenvironment{code}[1][]{%
   \lstset{style=yukinacode,
     title={\ifstrempty{#1}{代码}{代码：{#1}}},
-    aboveskip=\medskipamount,
-    belowskip=\medskipamount}
+    aboveskip=\smallskipamount,
+    belowskip=\smallskipamount}
 }{}
 
 
