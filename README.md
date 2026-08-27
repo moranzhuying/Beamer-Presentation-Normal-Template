@@ -73,19 +73,23 @@
 * `structure.sty` 模块 IV 的符号库（`\N \Z \Q \R \C`、`\Hom \End \Aut`、`\GL \SL \SO` 等）与「笔记写作」完全一致，直接复用；
 * `quiver.sty` 支持 q.uiver.app 导出的交换图。
 
-### 5. 底部进度条与章节导航
+### 5. 页脚三行结构
 
-页脚（footline）内置三要素：
+页脚（footline）自下而上三行：
 
-1. **进度条**：页面底部一条细线，按「当前帧/总帧」比例填充主题色，直观显示讲到哪里；
-2. **章节导航**：所有 `\section` 水平排列在页脚，**当前节高亮为主题色**，其余节灰色——**点击节名可直接跳转到该节**（Beamer 内置导航链接）；
-3. **页码**：右下角 n/N。
+1. **作者信息**：作者 · 单位 · 日期（`main.tex` 中 `\author{}` / `\institute{}` / `\date{}` 设置，为空项自动省略），右端页码 n/N；
+2. **章节导航**：所有 `\section` 带编号水平排列（`1. 基础帧`），**当前节高亮为主题色**，点击节名可直接跳转到该节；
+3. **进度条**：页面底部一条细线，按「当前帧/总帧」比例填充主题色。
 
-作者信息在 `main.tex` 用 `\author{名字}` 设置后会自动出现在页脚与标题页，不设置则自动隐藏。
+另外，页面右下角有一排**导航符号**（前进/后退/开始/结束等箭头图标，Beamer 内置，可点击跳转）。不想要时在主题文件里写 `\setbeamertemplate{navigation symbols}{}` 即可隐藏。
 
 ### 6. 内容按帧拆分
 
 `Content/` 下每节一个子目录，**每帧一个 `.tex` 文件**，`index.tex` 只做 `\input` 汇总（与「笔记写作」的 Chapter → Section 结构同思路）。新增帧时：在节目录里新建文件，然后在 `index.tex` 加一行 `\input`。避免单文件过大，方便定位与维护。
+
+### 7. 章节编号
+
+节编号自动生成：目录帧、节标题帧、页脚导航均显示 `1.`、`2.` 等编号（beamer 自动维护，无需手动写）。
 
 ## Beamer 使用要点
 
@@ -123,6 +127,18 @@
 
 ```bash
 latexmk -xelatex main.tex
+```
+
+## TeXStudio 提示「Beamer 主题：Yukina 没找到」
+
+这是误报，不影响编译。原因：主题文件 `beamerthemeYukina.sty` 在项目本地目录，TeXStudio 的静态检查只搜 TeX 发行版目录。
+
+**解决方案**（已执行）：把主题安装到用户级 TeX 目录（`~/texmf/tex/latex/beamer/themes/theme/`），TeXStudio 重启后即可识别。编译时仍优先使用项目本地版本（当前目录优先于 texmf），两者保持一致。
+
+修改主题后若需同步到 texmf，重新执行：
+
+```bash
+cp beamerthemeYukina.sty ~/texmf/tex/latex/beamer/themes/theme/
 ```
 
 ## 与「笔记写作」的对应关系
