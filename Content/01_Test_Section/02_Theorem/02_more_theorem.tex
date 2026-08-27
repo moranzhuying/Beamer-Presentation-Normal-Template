@@ -1,0 +1,72 @@
+% ================================================================
+% 02_more_theorem.tex — 更多定理环境帧
+% 覆盖: 引理/命题/推论/注记 + 其余全部编号环境 (全量测试)
+% ================================================================
+
+\begin{frame}{更多定理环境}
+  \begin{lemma}{}
+    若 $f$ 在闭区间上连续, 则 $f$ 一致连续。
+  \end{lemma}
+
+  \begin{proposition}{}
+    连续函数把紧集映射为紧集。
+  \end{proposition}
+
+  \begin{corollary}{}
+    闭区间上的连续函数必有最大值与最小值。
+  \end{corollary}
+
+  \begin{remark}{}
+    上述结论在度量空间框架下仍然成立。
+  \end{remark}
+\end{frame}
+
+\begin{frame}{其余定理环境 (全量测试)}
+  \begin{axiom}{选择公理}{}
+    任意非空集合族 $\{A_i\}_{i \in I}$ 存在选择函数。
+  \end{axiom}
+
+  \begin{hypothesis}{}{}
+    假设 $f$ 在 $[a, b]$ 上 Riemann 可积。
+  \end{hypothesis}
+
+  \begin{metatheorem}{}{}
+    元定理: 所有定理均可被形式化验证。
+  \end{metatheorem}
+
+  \begin{criteria}{Cauchy 准则}{}
+    数列收敛当且仅当它是 Cauchy 列。
+  \end{criteria}
+
+  \begin{convention}{}{}
+    本书中 $\N$ 含 $0$。
+  \end{convention}
+
+  \begin{algorithm}{Euclid 算法}{}
+    输入 $a, b$; 当 $b \neq 0$ 时令 $(a, b) \leftarrow (b, a \bmod b)$。
+  \end{algorithm}
+
+  \begin{alarm}{常见错误}{}
+    不要把 $\lim (a_n b_n) = \lim a_n \cdot \lim b_n$ 用于发散数列。
+  \end{alarm}
+\end{frame}
+
+\begin{frame}{问题与回答}
+  \begin{problem}{}{pr:continuity}
+    判断 $f(x) = |x|$ 在 $x = 0$ 处是否可导。
+  \end{problem}
+
+  \pause
+
+  \begin{answer}
+    不可导: 左右导数分别为 $-1$ 与 $1$, 不相等。
+  \end{answer}
+
+  \begin{example}{}{}
+    $f(x) = x^2$ 在 $x = 0$ 处可导, 且 $f'(0) = 0$。
+  \end{example}
+
+  \begin{sketch}{}{}
+    由导数的定义直接计算差商极限。
+  \end{sketch}
+\end{frame}

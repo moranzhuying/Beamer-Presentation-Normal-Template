@@ -12,16 +12,17 @@
 ├── quiver.sty            # 交换图支持（与「笔记写作」相同）
 ├── update_cwl.py         # 从 structure.sty 生成 TeXStudio 环境补全（可选）
 ├── cwl/                  # 生成的补全文件 yukina-beamer.cwl
-├── Content/              # 内容目录（每节一个子目录，每帧一个文件）
-│   ├── 01_Test_Section/  # 基础测试节
-│   │   ├── index.tex     #   节汇总：只做 \input
-│   │   ├── 01_text_list.tex   #   文字与列表帧
-│   │   ├── 02_formula.tex     #   基础公式帧
-│   │   ├── 03_theorem.tex     #   定理环境与引用帧
-│   │   ├── 04_more_theorem.tex#   更多定理环境帧
-│   │   └── 05_exercise.tex    #   习题与提示帧
-│   └── 02_Test_Section/  # 进阶测试节（交换图/两栏/代码/公式/表格，同上拆分）
-└── Figures/              # 插图目录
+├── Content/              # 内容目录（三层: 节 → 小节 → 帧文件）
+│   ├── 01_Test_Section/  # 第一节
+│   │   ├── index.tex     #   节汇总: 只做 \input
+│   │   ├── 01_Basic/     #   小节 1.1 基础排版
+│   │   │   ├── index.tex #     \subsection + \input 帧文件
+│   │   │   ├── 01_text_list.tex
+│   │   │   └── 02_formula.tex
+│   │   ├── 02_Theorem/   #   小节 1.2 定理环境
+│   │   └── 03_Exercise/  #   小节 1.3 习题与提示
+│   └── 02_Test_Section/  # 第二节（交换图/布局/代码，同上三层结构）
+└── Figures/              # 插图目录（含 test_figure.png 测试图）
 ```
 
 ## 模板特点
@@ -87,9 +88,22 @@
 
 `Content/` 下每节一个子目录，**每帧一个 `.tex` 文件**，`index.tex` 只做 `\input` 汇总（与「笔记写作」的 Chapter → Section 结构同思路）。新增帧时：在节目录里新建文件，然后在 `index.tex` 加一行 `\input`。避免单文件过大，方便定位与维护。
 
-### 7. 章节编号
+### 7. 章节编号与层级
 
-节编号自动生成：目录帧、节标题帧、页脚导航均显示 `1.`、`2.` 等编号（beamer 自动维护，无需手动写）。
+支持三级结构，编号自动生成（目录、标题帧、页脚导航一致）：
+
+```latex
+\part{第一部分}          % 第 1 部分
+\section{节}             % 1. 节
+\subsection{小节}        % 1.1 小节
+```
+
+* 每级开头自动插入标题帧（不需要某级可写 `\AtBeginXXX{}` 关闭）；
+* 目录帧须放在 `\part` 之后（beamer 的 `\tableofcontents` 默认只显示当前 part 的节）。
+
+### 8. 帧内容不可跨页
+
+Beamer 帧超出一页时**不会自动分页**，溢出内容会被裁掉。内容较多时应拆成多帧（参考 `Content/01_Test_Section/03_Exercise/` 的习题与引用两帧示例）。
 
 ## Beamer 使用要点
 

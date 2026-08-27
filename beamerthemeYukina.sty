@@ -173,9 +173,10 @@
 }
 \setbeamertemplate{section in head/foot}[yukina]
 \setbeamertemplate{section in head/foot shaded}[yukina]
-% 目录帧: 显示节编号 (1. 基础帧, 2. 进阶帧)
+% 目录帧: 显示节编号 (1. 基础帧) 与小节编号 (1.1 基础排版)
+% 注意: section 用 sections numbered, subsection 需用 subsections numbered 才有编号。
 \setbeamertemplate{section in toc}[sections numbered]
-\setbeamertemplate{subsection in toc}[sections numbered]
+\setbeamertemplate{subsection in toc}[subsections numbered]
 
 % -------- 4.4 导航符号: 恢复 beamer 默认 (右下角前进/后退等图标) --------
 % 保持默认模板即可; 若想隐藏, 改为 \setbeamertemplate{navigation symbols}{}。
@@ -217,14 +218,39 @@
 \setbeamertemplate{caption}{\insertcaption}
 \setbeamerfont{caption}{size=\scriptsize}
 
-% -------- 4.7 节标题帧: 每节开头自动插入, 显示节编号 --------
-% 若不需要, 在 main.tex 导言区写 \AtBeginSection{} 即可关闭。
+% -------- 4.7 部分/节/小节标题帧: 各层级开头自动插入, 显示编号 --------
+% 不需要某级标题帧时, 在 main.tex 导言区写对应 \AtBeginXXX{} 即可关闭。
+
+% -- Part 标题帧: 第 1 部分 标题 --
+% 注意: \AtBeginPart 不支持 [] 可选参数 (与 AtBeginSection/AtBeginSubsection 不同)。
+\AtBeginPart{%
+  \begin{frame}[plain,noframenumbering]
+    \centering
+    \vfill
+    {\usebeamerfont{frametitle}\usebeamercolor[fg]{structure}%
+     第\insertpartnumber 部分\quad\insertpart\par}
+    \vfill
+  \end{frame}
+}
+
+% -- Section 标题帧: 1. 标题 --
 \AtBeginSection[]{%
   \begin{frame}[plain,noframenumbering]
     \centering
     \vfill
     {\usebeamerfont{frametitle}\usebeamercolor[fg]{structure}%
      \insertsectionnumber.\quad\insertsectionhead\par}
+    \vfill
+  \end{frame}
+}
+
+% -- Subsection 标题帧: 1.1 标题 --
+\AtBeginSubsection[]{%
+  \begin{frame}[plain,noframenumbering]
+    \centering
+    \vfill
+    {\usebeamerfont{frametitle}\usebeamercolor[fg]{structure}%
+     \insertsectionnumber.\insertsubsectionnumber\quad\insertsubsectionhead\par}
     \vfill
   \end{frame}
 }

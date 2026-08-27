@@ -1,5 +1,6 @@
 % ================================================================
-% 05_exercise.tex — 习题与提示帧
+% 01_exercise.tex — 习题与提示帧
+% 注意: Beamer 帧内容不可跨页, 内容较多时拆成多帧。
 % ================================================================
 
 \begin{frame}{习题与提示}
@@ -17,4 +18,14 @@
   \begin{hint}[思路提示]
     使用 $\varepsilon$--$N$ 语言, 注意放缩 $\frac{1}{n+1} < \frac{1}{n}$。
   \end{hint}
+\end{frame}
+
+\begin{frame}{跨小节引用}
+  \begin{remark}{}
+    跨小节引用测试: 由前面的定理 \ref{thm:euler} 可知复数指数与三角函数的联系。
+  \end{remark}
+
+  \begin{remark}{}
+    同帧引用测试: 习题 \ref{ex:limit} 是上一帧的内容。
+  \end{remark}
 \end{frame}
