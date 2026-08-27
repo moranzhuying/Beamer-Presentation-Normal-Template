@@ -120,11 +120,13 @@
 }
 \setbeamertemplate{frametitle}[yukina]
 
-% -------- 4.2 footline: 作者 · 短标题 | 页码/总页数 --------
+% -------- 4.2 footline: [作者 ·] 短标题 | 页码/总页数 --------
+% 作者 (beamer@shortauthor) 为空时自动省略, 不残留分隔符。
 \defbeamertemplate{footline}{yukina}{%
   \begin{beamercolorbox}[wd=\textwidth,ht=2.4ex,dp=1.2ex,leftskip=10pt,rightskip=10pt]{footline}%
     \usebeamerfont{footline}\usebeamercolor[fg]{footline}%
-    \insertshortauthor\hspace{0.6em}\textbar\hspace{0.6em}\insertshorttitle%
+    \ifx\beamer@shortauthor\empty\else\insertshortauthor\hspace{0.6em}\textbar\hspace{0.6em}\fi
+    \insertshorttitle%
     \hfill\insertframenumber/\inserttotalframenumber%
   \end{beamercolorbox}%
 }
@@ -141,16 +143,26 @@
 \setbeamertemplate{enumerate subitem}{\insertsubenumlabel.}
 \setbeamertemplate{enumerate subsubitem}{\insertsubsubenumlabel.}
 
-% -------- 4.5 标题页: 居中, 标题主色 --------
+% -------- 4.5 标题页: 居中, 标题主色; 作者/日期/机构为空时自动省略 --------
+% 判断基于宏定义是否为空 (\ifx...\empty), 比 \ifstrempty 更可靠:
+% beamer 初始化时已调用 \author{} \date{}, 故对应宏一定存在。
 \defbeamertemplate{title page}{yukina}{%
   \vfill
   {\usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle\par}%
-  \vskip 1.2em
-  {\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\par}%
-  \vskip 0.6em
-  {\usebeamerfont{date}\usebeamercolor[fg]{date}\insertdate\par}%
-  \vskip 0.6em
-  {\usebeamerfont{institute}\usebeamercolor[fg]{institute}\insertinstitute\par}%
+  \ifx\beamer@shortauthor\empty\else
+    \vskip 1.2em
+    {\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\par}%
+  \fi
+  \ifx\insertdate\empty\else
+    \vskip 0.6em
+    {\usebeamerfont{date}\usebeamercolor[fg]{date}\insertdate\par}%
+  \fi
+  \ifcsname beamer@shortinstitute\endcsname
+    \ifx\beamer@shortinstitute\empty\else
+      \vskip 0.6em
+      {\usebeamerfont{institute}\usebeamercolor[fg]{institute}\insertinstitute\par}%
+    \fi
+  \fi
   \vfill
 }
 \setbeamertemplate{title page}[yukina]
