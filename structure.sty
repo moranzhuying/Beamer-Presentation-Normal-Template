@@ -1,0 +1,375 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{./structure}[2026/08/27 Beamer structure for math slides]
+
+% ================================================================
+% structure.sty — 数学演示样式包 (Beamer 版)
+% ----------------------------------------------------------------
+% 与「笔记写作」structure.sty 配套, 由 main.tex 加载 (XeLaTeX 编译)。
+% 须先加载主题: \usetheme[light|dark]{Yukina} (本包使用其颜色宏)。
+%
+% 模块划分:
+%   I.   宏包加载 (数学 / 绘图 / 表格 / 列表 / 代码)
+%   II.  定理与证明环境 (Beamer 原生实现, 语义与书籍版一致)
+%   III. 引用与超链接
+%   IV.  数学符号定义库 (与书籍版完全一致)
+% ================================================================
+
+
+% -------- 0. 前置检查: 必须位于 Yukina 主题之后 --------
+\@ifpackageloaded{beamerthemeYukina}{}{%
+  \PackageError{structure}{%
+    Yukina 主题未加载。请在 \string\usetheme\{Yukina\} 之后加载本包%
+  }{%
+    加载顺序: \string\usetheme\{Yukina\} 先于 \string\usepackage\{./structure\}%
+  }%
+}
+
+
+% ================================================================
+% [模块 I] 宏包加载
+% ================================================================
+
+% -------- 1.1 数学核心宏包 --------
+% amsthm 由 Beamer 内置, 此处不重复加载。
+\usepackage{amsmath, amsfonts, amssymb}
+\usepackage{bm}          % 粗体数学符号 (\bm)
+\usepackage{mathrsfs, stmaryrd, mathtools}
+
+% -------- 1.2 绘图与交换图 --------
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usepackage{graphicx}
+
+% -------- 1.3 数据绘图 --------
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% -------- 1.4 表格增强 --------
+% 演示中不使用跨页长表格 (longtable) 与浮动标题 (caption/subcaption)。
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{multirow}
+
+% -------- 1.5 代码环境 (listings) --------
+\usepackage{listings}
+
+
+% ================================================================
+% [模块 II] 定理与证明环境
+% ================================================================
+% 与「笔记写作」语义完全一致:
+%   用法        : \begin{环境名}{标题}{label} ... \end{环境名}
+%   编号类环境  : 共用 mathcount 计数器, 按 section 编号 (如 定理 1.1)
+%   习题        : 独立计数器 exercisecount
+%   引用        : \ref{label} (Beamer 内置 hyperref, 无需 cleveref)
+% 视觉由 Beamer 原生盒子实现 (支持 \pause 等 overlay 指令),
+% 样式为「顶部细色条 + 主色标题 + 浅色盒底」, 深浅模式自动适配。
+
+% -------- 2.1 计数器 --------
+\newcounter{mathcount}[section]
+\renewcommand{\themathcount}{\thesection.\arabic{mathcount}}
+
+\newcounter{exercisecount}[section]
+\renewcommand{\theexercisecount}{\thesection.\arabic{exercisecount}}
+
+% -------- 2.2 基础排版宏 --------
+% 顶部色条 + 标题行
+\newcommand{\yukina@blockhead}[3]{%
+  \par\vskip\medskipamount
+  \noindent{\color{\yukinaline{#2}}\rule{\textwidth}{1.8pt}}\par
+  \vskip 3pt
+  \noindent{\usebeamerfont{block title}\color{\yukinac{#2}}\textbf{#1}%
+    \ifstrempty{#3}{}{\ \normalfont #3}}\par
+  \vskip\smallskipamount
+}
+% 盒体开始/结束
+\newcommand{\yukina@blockbodybegin}{%
+  \begin{beamercolorbox}[wd=\textwidth,leftskip=10pt,rightskip=10pt,sep=5pt]{block body}%
+}
+\newcommand{\yukina@blockbodyend}{%
+  \end{beamercolorbox}%
+  \par\vskip\medskipamount
+}
+
+% -------- 2.3 编号环境批量定义 --------
+% \yukina@defthm{环境名}{中文名}{主色}{计数器}
+\newcommand{\yukina@defthm}[4]{%
+  \newenvironment{#1}[2]{%
+    \refstepcounter{#4}%
+    \ifstrempty{##2}{}{\label{##2}}%
+    \setbeamercolor{block body}{bg=\yukinabg{#3}, fg=textcolor}%
+    \yukina@blockhead{#2~\csname the#4\endcsname}{#3}{##1}%
+    \yukina@blockbodybegin
+  }{%
+    \yukina@blockbodyend
+  }%
+}
+
+% -------- 2.4 旧环境清理 (Beamer 自带部分同名环境) --------
+\let\theorem\relax\let\endtheorem\relax
+\let\lemma\relax\let\endlemma\relax
+\let\proposition\relax\let\endproposition\relax
+\let\corollary\relax\let\endcorollary\relax
+\let\example\relax\let\endexample\relax
+\let\definition\relax\let\enddefinition\relax
+\let\proof\relax\let\endproof\relax
+\let\exercise\relax\let\endexercise\relax
+\let\problem\relax\let\endproblem\relax
+\let\solution\relax\let\endsolution\relax
+
+% -------- 2.5 编号环境 (与书籍版一一对应) --------
+% -- 基础陈述: 蓝 / 靛蓝 / 青 --
+\yukina@defthm{definition}{定义}{mainblue}{mathcount}
+\yukina@defthm{axiom}{公理}{mainindigo}{mathcount}
+\yukina@defthm{hypothesis}{假设}{mainteal}{mathcount}
+
+% -- 推演结果: 每类独立主色 --
+\yukina@defthm{theorem}{定理}{mainred}{mathcount}
+\yukina@defthm{lemma}{引理}{mainorange}{mathcount}
+\yukina@defthm{proposition}{命题}{mainpurple}{mathcount}
+\yukina@defthm{corollary}{推论}{maingreen}{mathcount}
+\yukina@defthm{metatheorem}{元定理}{mainindigo}{mathcount}
+\yukina@defthm{criteria}{准则}{mainbrown}{mathcount}
+
+% -- 补充说明: 问题 / 例 / 注记 --
+\yukina@defthm{problem}{问题}{mainyellow}{mathcount}
+\yukina@defthm{example}{例}{maingreen}{mathcount}
+\yukina@defthm{remark}{注记}{maingray}{mathcount}
+
+% -- 习题: 独立计数器, 品红醒目 --
+\yukina@defthm{exercise}{习题}{mainmagenta}{exercisecount}
+
+% -- 其他: 算法 / 约定 / 警示 / 分析 --
+\yukina@defthm{algorithm}{算法}{mainorange}{mathcount}
+\yukina@defthm{convention}{约定}{mainbrown}{mathcount}
+\yukina@defthm{alarm}{警示}{mainred}{mathcount}
+\yukina@defthm{sketch}{分析}{mainpurple}{mathcount}
+
+% -------- 2.6 证明 / 回答 / 解答 / 提示 --------
+% -- 证明: 灰色细线, 自动加证毕符号 ∎ --
+% 注意: 上方已 \let\proof\relax, 故用 \newenvironment 而非 \renewenvironment。
+\newenvironment{proof}[1][证明]{%
+  \par\vskip\medskipamount
+  \noindent{\color{\yukinaline{maingray}}\rule{\textwidth}{1.2pt}}\par
+  \vskip 3pt
+  \noindent{\usebeamerfont{block title}\color{\yukinac{maingray}}\textbf{\textsf{#1}}}\par
+  \vskip\smallskipamount
+  \setbeamercolor{block body}{bg=backgroundcolor, fg=textcolor}%
+  \begin{beamercolorbox}[wd=\textwidth,leftskip=10pt,rightskip=10pt,sep=5pt]{block body}%
+}{%
+  \hfill$\square$%
+  \end{beamercolorbox}%
+  \par\vskip\medskipamount
+}
+
+% -- 回答: 灰色细线 --
+\newenvironment{answer}{%
+  \par\vskip\medskipamount
+  \noindent{\color{\yukinaline{maingray}}\rule{\textwidth}{1.2pt}}\par
+  \vskip 3pt
+  \noindent{\usebeamerfont{block title}\color{\yukinac{maingray}}\textbf{\textsf{回答}}}\par
+  \vskip\smallskipamount
+  \setbeamercolor{block body}{bg=\yukinabg{maingray}, fg=textcolor}%
+  \begin{beamercolorbox}[wd=\textwidth,leftskip=10pt,rightskip=10pt,sep=5pt]{block body}%
+}{%
+  \end{beamercolorbox}%
+  \par\vskip\medskipamount
+}
+
+% -- 解答: 题后即答 (习题专用) --
+\newenvironment{solution}{%
+  \par\vskip\medskipamount
+  \noindent{\color{\yukinaline{maingray}}\rule{\textwidth}{1.2pt}}\par
+  \vskip 3pt
+  \noindent{\usebeamerfont{block title}\color{\yukinac{maingray}}\textbf{\textsf{解答}}}\par
+  \vskip\smallskipamount
+  \setbeamercolor{block body}{bg=\yukinabg{maingray}, fg=textcolor}%
+  \begin{beamercolorbox}[wd=\textwidth,leftskip=10pt,rightskip=10pt,sep=5pt]{block body}%
+}{%
+  \end{beamercolorbox}%
+  \par\vskip\medskipamount
+}
+
+% -- 提示: 可选参数为标题, 黄底茶色 --
+\newenvironment{hint}[1][提示]{%
+  \par\vskip\medskipamount
+  \noindent{\color{\yukinaline{mainyellow}}\rule{\textwidth}{1.2pt}}\par
+  \vskip 3pt
+  \noindent{\usebeamerfont{block title}\color{\yukinac{mainbrown}}\textbf{\textsf{#1}}}\par
+  \vskip\smallskipamount
+  \setbeamercolor{block body}{bg=\yukinabg{mainyellow}, fg=textcolor}%
+  \begin{beamercolorbox}[wd=\textwidth,leftskip=10pt,rightskip=10pt,sep=5pt]{block body}%
+}{%
+  \end{beamercolorbox}%
+  \par\vskip\medskipamount
+}
+
+% -------- 2.7 代码环境 (listings, 需放在 fragile 帧中) --------
+\lstdefinestyle{yukinacode}{%
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  backgroundcolor=\color{\yukinabg{maingray}},
+}
+\lstnewenvironment{code}[1][]{%
+  \lstset{style=yukinacode,
+    title={\ifstrempty{#1}{代码}{代码：{#1}}},
+    aboveskip=\medskipamount,
+    belowskip=\medskipamount}
+}{}
+
+
+% ================================================================
+% [模块 III] 引用与超链接
+% ================================================================
+% hyperref 由 Beamer 内置, 直接用 \ref / \label 即可。
+% 习题引用笔记宏 (与书籍版一致):
+%   模式 1 (独立习题集): 展开为 \ref{note-标签} (跨文档引用);
+%   模式 2 (讲义内嵌)  : 在 main.tex 中 \renewcommand{\noteref}[1]{\ref{#1}} 覆盖。
+\providecommand{\noteref}[1]{\ref{note-#1}}
+
+
+% ================================================================
+% [模块 IV] 数学符号定义库
+% ================================================================
+% 与「笔记写作」模块 VI 完全一致, 直接复用。
+
+% -------- 4.1 代数 --------
+\newcommand{\N}{\mathbb{N}}              % 自然数集
+\newcommand{\Z}{\mathbb{Z}}              % 整数集
+\newcommand{\Q}{\mathbb{Q}}              % 有理数集
+\newcommand{\R}{\mathbb{R}}              % 实数集
+\newcommand{\C}{\mathbb{C}}              % 复数集
+\newcommand{\K}{\mathbb{K}}              % 域
+\newcommand{\F}{\mathbb{F}}              % 有限域
+\renewcommand{\emptyset}{\varnothing}    % 更美观的空集
+\newcommand{\fin}{\operatorname{Fin}}    % 有限
+\newcommand{\Coll}{\operatorname{Coll}}  % 集合族/集合汇集
+\newcommand{\FuncRel}{\operatorname{FuncRel}} % 函数关系
+\newcommand{\PFunc}{\operatorname{PFunc}} % 偏函数
+\newcommand{\Eq}{\operatorname{Eq}}      % 等价关系
+\newcommand{\id}{\operatorname{id}}      % 恒等变换
+\newcommand{\rank}{\operatorname{rank}}  % 秩
+\newcommand{\nul}{\operatorname{nul}}    % 零度 (Nullity)
+\newcommand{\Nul}{\operatorname{Nul}}    % 零空间
+\newcommand{\dom}{\operatorname{dom}}    % 定义域
+\newcommand{\im}{\operatorname{im}}      % 像 (Image)
+\newcommand{\coim}{\operatorname{coim}}  % 陪像
+\newcommand{\coker}{\operatorname{coker}}% 陪核
+\newcommand{\tr}{\operatorname{tr}}      % 迹 (Trace)
+\newcommand{\Tr}{\operatorname{Tr}}      % 迹 (大写)
+\newcommand{\diag}{\operatorname{diag}}  % 对角矩阵
+\newcommand{\codim}{\operatorname{codim}}% 余维数
+\newcommand{\row}{\operatorname{row}}    % 行空间
+\newcommand{\col}{\operatorname{col}}    % 列空间
+\newcommand{\Mat}{\operatorname{Mat}}    % 矩阵空间
+\newcommand{\am}{\operatorname{AM}}      % 代数重数
+\newcommand{\gm}{\operatorname{GM}}      % 几何重数
+\newcommand{\Ann}{\operatorname{Ann}}    % 零化子 (Annihilator)
+\newcommand{\Char}{\operatorname{Char}}  % 特征 (Characteristic)
+\newcommand{\Min}{\operatorname{Min}}    % 最小多项式
+\newcommand{\piv}{\operatorname{piv}}    % 主元指数
+\newcommand{\Hom}{\operatorname{Hom}}    % 态射集
+\newcommand{\End}{\operatorname{End}}    % 自同态
+\newcommand{\Aut}{\operatorname{Aut}}    % 自同构
+\newcommand{\Isom}{\operatorname{Isom}}  % 同构
+\newcommand{\lcm}{\operatorname{lcm}}    % 最小公倍数
+\newcommand{\ord}{\operatorname{ord}}    % 阶 (Order)
+\newcommand{\op}{\operatorname{op}}      % 反对偶
+\newcommand{\Frac}{\operatorname{Frac}}  % 分式域
+\newcommand{\tor}{\operatorname{tor}}    % 挠
+\newcommand{\res}{\operatorname{res}}    % 残数/限制
+\newcommand{\rad}{\operatorname{rad}}    % 根
+\newcommand{\sign}{\operatorname{sign}}  % 符号函数
+\newcommand{\sgn}{\operatorname{sgn}}    % 符号函数
+\newcommand{\inv}{\operatorname{inv}}    % 逆/不变
+\newcommand{\ev}{\operatorname{ev}}      % 赋值映射
+\newcommand{\Equ}{\operatorname{Equ}}    % 等价关系类
+\newcommand{\Res}{\operatorname{Res}}    % 结式,限制积
+\newcommand{\Rat}{\operatorname{Rat}}    % 有理性
+\newcommand{\aplus}{\mathbin{\bm{+}}}    % 粗体加号（代数重数等）
+\newcommand{\aminus}{\mathbin{\bm{-}}}   % 粗体减号
+\newcommand{\Der}{\operatorname{Der}}    % 导子
+\newcommand{\Lib}{\operatorname{Lib}}    % 自由对象相关记号
+\newcommand{\Libas}{\operatorname{Libas}}   % 自由代数相关记号
+\newcommand{\Libasc}{\operatorname{Libasc}} % 自由结合代数相关记号
+\newcommand{\Stab}{\operatorname{Stab}}  % 稳定子
+\newcommand{\Fix}{\operatorname{Fix}}    % 不动点集
+\newcommand{\orbit}{\operatorname{orbit}}% 轨道
+\newcommand{\Ind}{\operatorname{Ind}}    % 诱导表示
+\newcommand{\Ad}{\operatorname{Ad}}      % 伴随表示
+\newcommand{\ad}{\operatorname{ad}}      % 伴随
+\newcommand{\Inn}{\operatorname{Inn}}    % 内同构群
+\newcommand{\Int}{\operatorname{Int}}    % 内自同构
+\newcommand{\Grp}{\operatorname{Grp}}    % 群范畴
+\newcommand{\Mo}{\operatorname{Mo}}      % 幺半群相关记号
+\newcommand{\Mag}{\operatorname{Mag}}    % 原群 (magma)
+\newcommand{\Core}{\operatorname{Core}}  % 核心/正规核
+\newcommand{\bigast}{\mathop{\vcenter{\hbox{\scalebox{1.5}{$\ast$}}}}\displaylimits}      % 大星号算子
+\newcommand{\bigtop}{\mathop{\vcenter{\hbox{\scalebox{1.5}{$\top$}}}}\displaylimits}      % 大 top 算子
+\newcommand{\bigbot}{\mathop{\vcenter{\hbox{\scalebox{1.5}{$\bot$}}}}\displaylimits}      % 大 bot 算子
+\newcommand{\bigboxplus}{\mathop{\vcenter{\hbox{\scalebox{1.5}{$\boxplus$}}}}\displaylimits} % 大盒加算子
+\newcommand{\Shuffle}{\operatorname{Sf}} % shuffle 运算
+\newcommand{\Pol}{\operatorname{Pol}}    % 多项式空间
+\newcommand{\mult}{\operatorname{mult}}  % 重数
+\newcommand{\Ratio}{\operatorname{Ratio}} % 比率/商
+\newcommand{\cont}{\operatorname{cont}}  % 多项式的容度
+\newcommand{\Com}{\operatorname{Com}}    % 交换子
+\newcommand{\Eig}{\operatorname{Eig}}    % 特征空间
+\newcommand{\GEig}{\operatorname{GEig}}  % 广义特征空间
+\newcommand{\Gram}{\operatorname{Gram}}  % Gram 矩阵
+\newcommand{\Sesq}{\operatorname{Sesq}}  % 半双线性形式
+\newcommand{\Tens}{\operatorname{Tens}}  % 交替张量
+\newcommand{\Alt}{\operatorname{Alt}}    % 交替张量
+\newcommand{\Sym}{\operatorname{Sym}}    % 对称张量
+\newcommand{\Bil}{\operatorname{Bil}}    % 双线性形式
+\newcommand{\SymBil}{\operatorname{SymBil}}   % 对称双线性形式
+\newcommand{\AntiBil}{\operatorname{AntiBil}} % 反对称双线性形式
+\newcommand{\Mult}{\operatorname{Mult}}  % 多重映射
+\newcommand{\pr}{\operatorname{pr}}      % 投影 (Projection)
+\newcommand{\adj}{\operatorname{adj}}    % 矩阵的古典伴随
+\newcommand{\cf}{\operatorname{cf}}      % 矩阵的余子式矩阵
+\newcommand{\Norm}{\operatorname{N}}     % 范数/域范数
+\newcommand{\Pc}{\operatorname{Pc}}      % 特征多项式
+
+% -------- 4.2 几何 --------
+\newcommand{\Vol}{\operatorname{Vol}}    % 体积
+\newcommand{\dr}{\operatorname{dr}}      % 外微分相关
+\newcommand{\OrdB}{\operatorname{OrdB}}  % 有序基
+\newcommand{\Tran}{\operatorname{Tran}}  % 转移矩阵
+\newcommand{\str}{\operatorname{str}}    % 超迹
+\newcommand{\Aff}{\operatorname{Aff}}    % 仿射空间
+\newcommand{\Gr}{\operatorname{Gr}}      % 格拉斯曼流形
+\newcommand{\Pf}{\operatorname{Pf}}      % Pfaffian
+\newcommand{\Sp}{\operatorname{Sp}}      % 辛群
+\newcommand{\SU}{\operatorname{SU}}      % 特殊酉群
+\newcommand{\SO}{\operatorname{SO}}      % 特殊正交群
+\newcommand{\GL}{\operatorname{GL}}      % 一般线性群
+\newcommand{\SL}{\operatorname{SL}}      % 特殊线性群
+\newcommand{\GU}{\operatorname{GU}}      % 相似变换群
+\newcommand{\GSU}{\operatorname{GSU}}    % 特殊相似变换群
+\newcommand{\PGL}{\operatorname{PGL}}    % 一般线性群的投影化
+\newcommand{\ind}{\operatorname{ind}}    % 指数
+\newcommand{\Dir}{\operatorname{Dir}}    % 方向
+\newcommand{\Herm}{\operatorname{Herm}}  % Hermitian 形式
+\newcommand{\SHerm}{\operatorname{SHerm}}% 对称 Hermitian 形式
+\newcommand{\AHerm}{\operatorname{AHerm}}% 反 Hermitian 形式
+\newcommand{\Quad}{\operatorname{Quad}}  % 二次型
+\newcommand{\Disp}{\operatorname{Disp}}  % 位移
+\newcommand{\Sim}{\operatorname{Sim}}    % 相似变换
+\newcommand{\Cl}{\operatorname{Cl}}      % Clifford 代数/闭包
+\newcommand{\Spin}{\operatorname{Spin}}  % Spin 群
+
+% -------- 4.3 分析 --------
+\newcommand{\limit}{\displaystyle\lim}   % 强制使用行间公式样式的极限
+\newcommand{\tg}{\operatorname{tg}}      % 正切函数
+\newcommand{\ctg}{\operatorname{ctg}}    % 余切函数
+\newcommand{\interior}{\operatorname{int}} % 内部
+\newcommand{\exterior}{\operatorname{ext}} % 外部
+\newcommand{\boundary}{\operatorname{bd}}  % 边界
+\newcommand{\closure}{\operatorname{cl}}   % 闭包
+\newcommand{\supp}{\operatorname{supp}}    % 支集
+\newcommand{\disc}{\operatorname{disc}}    % 判别式/离散
+\newcommand{\tw}{\operatorname{tw}}        % 扭结 (Twist)

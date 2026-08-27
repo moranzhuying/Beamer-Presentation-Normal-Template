@@ -1,0 +1,171 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerthemeYukina}[2026/08/27 Beamer theme by Yukina]
+
+% ================================================================
+% beamerthemeYukina.sty — 与「笔记写作」配套的 Beamer 主题
+% ----------------------------------------------------------------
+% 用法: \usetheme[light]{Yukina}  浅色模式 (白底, 默认)
+%       \usetheme[dark]{Yukina}   深色模式 (深底)
+%
+% 模块划分:
+%   I.   模式开关 (light / dark)
+%   II.  配色体系 (学术 11 色 + 背景/文字/强调色)
+%   III. 字体设置
+%   IV.  帧元素模板 (frametitle / footline / itemize / 标题页 / 节标题帧)
+%
+% 与「笔记写作」structure.sty 的对应关系:
+%   模块 IV 的 11 种学术配色原样保留;
+%   ctexset / titlesec / fancyhdr 由 Beamer 模板机制替代。
+% ================================================================
+
+
+% ================================================================
+% [模块 I] 模式开关
+% ================================================================
+% 浅色模式: 白底深字; 深色模式: 深底浅字, 主色自动亮化。
+\newif\ifyukinadark
+\DeclareOptionBeamer{dark}{\yukinadarktrue}
+\DeclareOptionBeamer{light}{\yukinadarkfalse}
+\ExecuteOptionsBeamer{light}
+\ProcessOptionsBeamer
+
+
+% ================================================================
+% [模块 II] 配色体系
+% ================================================================
+
+% -------- 2.1 学术 11 色 (与「笔记写作」4.2 节一致) --------
+% 蓝:定义  靛蓝:公理/元定理  青:假设  红:定理/警示
+% 橙:引理/算法  紫:命题/分析  绿:推论/例  茶:准则/约定
+% 黄:提示/注意  品红:习题  灰:证明/回答/注记/代码
+\definecolor{mainblue}{RGB}{25, 95, 170}
+\definecolor{mainindigo}{RGB}{65, 75, 160}
+\definecolor{mainteal}{RGB}{0, 125, 140}
+\definecolor{mainred}{RGB}{180, 45, 55}
+\definecolor{mainorange}{RGB}{210, 100, 25}
+\definecolor{mainpurple}{RGB}{115, 70, 155}
+\definecolor{maingreen}{RGB}{40, 125, 75}
+\definecolor{mainbrown}{RGB}{145, 90, 45}
+\definecolor{mainyellow}{RGB}{195, 135, 0}
+\definecolor{mainmagenta}{RGB}{190, 55, 95}
+\definecolor{maingray}{RGB}{80, 80, 80}
+
+% -------- 2.2 页面背景 / 文字 / 强调色 --------
+\ifyukinadark
+    \definecolor{backgroundcolor}{RGB}{22, 26, 34}      % 深蓝黑背景
+    \definecolor{textcolor}{RGB}{226, 230, 238}         % 浅灰文字
+    \definecolor{accentcolor}{RGB}{125, 180, 235}       % 亮蓝强调
+    \newcommand{\yukinac}[1]{#1!75!white}               % 主色亮化 (标题用)
+    \newcommand{\yukinabg}[1]{#1!30!backgroundcolor}    % 盒底: 主色混背景
+    \newcommand{\yukinaline}[1]{#1!40!backgroundcolor}  % 细线: 主色混背景
+\else
+    \definecolor{backgroundcolor}{RGB}{255, 255, 255}   % 白底
+    \definecolor{textcolor}{RGB}{30, 30, 30}            % 深灰文字
+    \definecolor{accentcolor}{RGB}{25, 95, 170}         % mainblue
+    \newcommand{\yukinac}[1]{#1}                        % 主色原样
+    \newcommand{\yukinabg}[1]{#1!7!white}               % 盒底: 主色!7!白
+    \newcommand{\yukinaline}[1]{#1!35!white}            % 细线: 主色!35!白
+\fi
+
+% -------- 2.3 Beamer 颜色映射 --------
+\setbeamercolor{background canvas}{bg=backgroundcolor}
+\setbeamercolor{normal text}{fg=textcolor}
+\setbeamercolor{structure}{fg=accentcolor}
+\setbeamercolor{frametitle}{fg=textcolor}
+\setbeamercolor{framesubtitle}{fg=textcolor!70!backgroundcolor}
+\setbeamercolor{title}{fg=accentcolor}
+\setbeamercolor{author}{fg=textcolor}
+\setbeamercolor{date}{fg=textcolor}
+\setbeamercolor{institute}{fg=textcolor}
+\setbeamercolor{footline}{fg=textcolor!55!backgroundcolor}
+\setbeamercolor{item}{fg=accentcolor}
+\setbeamercolor{caption name}{fg=accentcolor}
+\setbeamercolor{section in toc}{fg=textcolor}
+\setbeamercolor{section in toc shaded}{fg=textcolor!60!backgroundcolor}
+\setbeamercolor{subsection in toc}{fg=textcolor!75!backgroundcolor}
+
+
+% ================================================================
+% [模块 III] 字体设置
+% ================================================================
+% 正文与数学用衬线 (贴近书籍观感, 与笔记模板一致);
+% 西文主字体 TeX Gyre Termes (Times 风格), 中文由 ctexbeamer 处理。
+\usefonttheme{serif}
+\setmainfont{TeX Gyre Termes}
+
+\setbeamerfont{frametitle}{size=\Large, series=\bfseries}
+\setbeamerfont{framesubtitle}{size=\normalsize, series=\mdseries}
+\setbeamerfont{title}{size=\Huge, series=\bfseries}
+\setbeamerfont{author}{size=\large}
+\setbeamerfont{date}{size=\normalsize}
+\setbeamerfont{footline}{size=\scriptsize}
+\setbeamerfont{block title}{size=\normalsize, series=\bfseries}
+
+
+% ================================================================
+% [模块 IV] 帧元素模板
+% ================================================================
+
+% -------- 4.1 frametitle: 左侧竖色条 + 标题 + 底部细线 --------
+\defbeamertemplate{frametitle}{yukina}{%
+  \noindent\vrule width 3pt height 1.3em depth 0.3em\hskip 8pt%
+  {\usebeamerfont{frametitle}\usebeamercolor[fg]{frametitle}\insertframetitle}\par%
+  \ifx\insertframesubtitle\empty\else
+    \vskip 2pt
+    \hskip 11pt{\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle}\par
+  \fi
+  \vskip 3pt
+  {\color{\yukinaline{accentcolor}}\hrule height 0.6pt}%
+  \vskip 6pt
+}
+\setbeamertemplate{frametitle}[yukina]
+
+% -------- 4.2 footline: 作者 · 短标题 | 页码/总页数 --------
+\defbeamertemplate{footline}{yukina}{%
+  \begin{beamercolorbox}[wd=\textwidth,ht=2.4ex,dp=1.2ex,leftskip=10pt,rightskip=10pt]{footline}%
+    \usebeamerfont{footline}\usebeamercolor[fg]{footline}%
+    \insertshortauthor\hspace{0.6em}\textbar\hspace{0.6em}\insertshorttitle%
+    \hfill\insertframenumber/\inserttotalframenumber%
+  \end{beamercolorbox}%
+}
+\setbeamertemplate{footline}[yukina]
+
+% -------- 4.3 导航符号: 演示时隐藏 --------
+\setbeamertemplate{navigation symbols}{}
+
+% -------- 4.4 itemize: 沿用笔记模板符号 ◆ ▷ ∗ --------
+\setbeamertemplate{itemize item}{$\diamond$}
+\setbeamertemplate{itemize subitem}{$\triangleright$}
+\setbeamertemplate{itemize subsubitem}{$\ast$}
+\setbeamertemplate{enumerate item}{\insertenumlabel.}
+\setbeamertemplate{enumerate subitem}{\insertsubenumlabel.}
+\setbeamertemplate{enumerate subsubitem}{\insertsubsubenumlabel.}
+
+% -------- 4.5 标题页: 居中, 标题主色 --------
+\defbeamertemplate{title page}{yukina}{%
+  \vfill
+  {\usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle\par}%
+  \vskip 1.2em
+  {\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\par}%
+  \vskip 0.6em
+  {\usebeamerfont{date}\usebeamercolor[fg]{date}\insertdate\par}%
+  \vskip 0.6em
+  {\usebeamerfont{institute}\usebeamercolor[fg]{institute}\insertinstitute\par}%
+  \vfill
+}
+\setbeamertemplate{title page}[yukina]
+
+% -------- 4.6 图片标题: 小字号, 名称主色 --------
+\setbeamertemplate{caption}{\insertcaption}
+\setbeamerfont{caption}{size=\scriptsize}
+
+% -------- 4.7 节标题帧: 每节开头自动插入 --------
+% 若不需要, 在 main.tex 导言区写 \AtBeginSection{} 即可关闭。
+\AtBeginSection[]{%
+  \begin{frame}[plain,noframenumbering]
+    \centering
+    \vfill
+    {\usebeamerfont{frametitle}\usebeamercolor[fg]{structure}\insertsectionhead\par}
+    \vfill
+  \end{frame}
+}

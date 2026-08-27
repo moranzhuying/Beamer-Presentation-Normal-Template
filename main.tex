@@ -1,0 +1,35 @@
+\documentclass[aspectratio=169,10pt]{ctexbeamer}
+
+% ================================================================
+% Beamer-Presentation 主文件
+% 与「笔记写作」模板配套的数学演示模板
+%
+% 主题: \usetheme[light]{Yukina} 或 \usetheme[dark]{Yukina}
+%       light = 浅色模式 (白底) / dark = 深色模式 (深底)
+% 编译: latexmk -xelatex main.tex
+% ================================================================
+
+\usetheme[light]{Yukina}   % 深浅模式二选一: light / dark
+
+\usepackage{./structure}   % 数学宏包 + 定理环境 + 符号库
+\usepackage{quiver}        % 交换图 (q.uiver.app)
+
+\title[Beamer 模板测试]{\textbf{一个简单的 Beamer 模板}}
+\author[Yukina]{Yukina}
+\date{\today}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}{目录}
+  \tableofcontents
+\end{frame}
+
+\section{基础帧}
+\input{./Content/01_Test_Section/index}
+
+\section{进阶帧}
+\input{./Content/02_Test_Section/index}
+
+\end{document}

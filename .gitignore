@@ -1,0 +1,32 @@
+# === LaTeX 编译产物 ===
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.synctex(busy)
+*.bbl
+*.blg
+*.dvi
+*.xdv
+*.listing
+*.pdf
+
+# === Beamer 特有产物 ===
+*.nav
+*.snm
+*.vrb
+
+# === 编辑器 / 系统 ===
+*.bak
+*.swp
+*~
+Thumbs.db
+.DS_Store
+
+# === WorkBuddy 项目数据（本地专属，不入库） ===
+.workbuddy/
