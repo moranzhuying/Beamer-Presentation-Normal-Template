@@ -1,84 +1,11 @@
 % ================================================================
-% 01_Test_Section — 基础测试帧
-% 覆盖: 文字与列表 (overlay 分步) / 基础公式 / 定理环境 / 引用
+% 01_Test_Section — 基础测试节
+% 帧按主题拆分到独立文件, 本文件只做 \input 汇总。
+% 覆盖: 文字与列表 (overlay 分步) / 基础公式 / 定理环境 / 引用 / 习题
 % ================================================================
 
-\begin{frame}{文字与列表}
-  一段普通的正文文字, 演示 Beamer 的基础排版效果。
-
-  \begin{itemize}
-    \item 一级条目, 使用 $\diamond$ 符号
-    \item<2-> 该条目通过 \texttt{<2->} 分步出现
-    \begin{itemize}
-      \item 二级条目, 使用 $\triangleright$ 符号
-      \begin{itemize}
-        \item 三级条目, 使用 $\ast$ 符号
-      \end{itemize}
-    \end{itemize}
-    \item<3-> 最后出现的条目
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{基础公式}
-  \begin{align}
-    (a + b)^2 &= a^2 + 2ab + b^2 \\
-    \int_a^b f(x)\,\mathrm{d}x &= F(b) - F(a)
-  \end{align}
-
-  \pause
-
-  行内公式示例: 对任意 $x \in \R$, 有 $e^{ix} = \cos x + i\sin x$。
-
-  \begin{equation}
-    \sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}
-  \end{equation}
-\end{frame}
-
-\begin{frame}{定理环境与引用}
-  \begin{theorem}{欧拉恒等式}{thm:euler}
-    对任意实数 $\theta$, 有 $e^{i\theta} = \cos\theta + i\sin\theta$。
-  \end{theorem}
-
-  \pause
-
-  \begin{proof}
-    由 $e^{i\theta}$ 的泰勒展开直接得到, 见 \ref{thm:euler} 的证明过程。
-  \end{proof}
-
-  \begin{definition}{导数}{def:derivative}
-    \[
-      f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}
-    \]
-  \end{definition}
-\end{frame}
-
-\begin{frame}{更多定理环境}
-  \begin{lemma}{}
-    若 $f$ 在闭区间上连续, 则 $f$ 一致连续。
-  \end{lemma}
-
-  \begin{proposition}{}
-    连续函数把紧集映射为紧集。
-  \end{proposition}
-
-  \begin{remark}{}
-    上述结论在度量空间框架下仍然成立。
-  \end{remark}
-\end{frame}
-
-\begin{frame}{习题与提示}
-  \begin{exercise}{}{ex:limit}
-    证明: $\displaystyle\lim_{n \to \infty} \frac{n}{n+1} = 1$。
-  \end{exercise}
-
-  \pause
-
-  \begin{solution}
-    对任意 $\varepsilon > 0$, 取 $N > 1/\varepsilon$, 则当 $n > N$ 时有
-    $\left|\frac{n}{n+1} - 1\right| = \frac{1}{n+1} < \varepsilon$。
-  \end{solution}
-
-  \begin{hint}[思路提示]
-    使用 $\varepsilon$--$N$ 语言, 注意放缩 $\frac{1}{n+1} < \frac{1}{n}$。
-  \end{hint}
-\end{frame}
+\input{./Content/01_Test_Section/01_text_list}
+\input{./Content/01_Test_Section/02_formula}
+\input{./Content/01_Test_Section/03_theorem}
+\input{./Content/01_Test_Section/04_more_theorem}
+\input{./Content/01_Test_Section/05_exercise}

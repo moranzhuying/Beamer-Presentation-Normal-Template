@@ -1,0 +1,16 @@
+% ================================================================
+% 03_code.tex — 代码环境帧
+% 注意: 含 verbatim/listings 的帧必须标记 [fragile]。
+% ================================================================
+
+\begin{frame}[fragile]{代码环境}
+  使用 \texttt{listings} 展示代码, 帧需标记为 \texttt{fragile}:
+
+  \begin{code}[Python]
+def fib(n):
+    """递归计算斐波那契数列"""
+    if n < 2:
+        return n
+    return fib(n - 1) + fib(n - 2)
+  \end{code}
+\end{frame}

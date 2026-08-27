@@ -1,0 +1,21 @@
+% ================================================================
+% 03_theorem.tex — 定理环境与引用帧
+% ================================================================
+
+\begin{frame}{定理环境与引用}
+  \begin{theorem}{欧拉恒等式}{thm:euler}
+    对任意实数 $\theta$, 有 $e^{i\theta} = \cos\theta + i\sin\theta$。
+  \end{theorem}
+
+  \pause
+
+  \begin{proof}
+    由 $e^{i\theta}$ 的泰勒展开直接得到, 见 \ref{thm:euler} 的证明过程。
+  \end{proof}
+
+  \begin{definition}{导数}{def:derivative}
+    \[
+      f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}
+    \]
+  \end{definition}
+\end{frame}

@@ -1,88 +1,11 @@
 % ================================================================
-% 02_Test_Section — 进阶测试帧
-% 覆盖: 交换图 (tikz-cd) / 两栏布局 / 代码环境 / 复杂公式 / 表格
+% 02_Test_Section — 进阶测试节
+% 帧按主题拆分到独立文件, 本文件只做 \input 汇总。
+% 覆盖: 交换图 / 两栏布局 / 代码环境 / 复杂公式 / 表格
 % ================================================================
 
-% 注意: 含 tikz-cd 交换图的帧必须标记 [fragile] (beamer 与 tikz-cd 的 catcode 兼容要求)。
-\begin{frame}[fragile]{交换图}
-  范畴论中的泛性质 (universal property):
-
-  \[
-    \begin{tikzcd}
-      A \arrow[r, "f"] \arrow[rd, "g"'] & B \arrow[d, "h"] \\
-      & C
-    \end{tikzcd}
-  \]
-
-  \pause
-
-  当 $h$ 唯一存在时, 称 $h$ 为 $f$ 沿 $g$ 的余诱导态射。
-\end{frame}
-
-\begin{frame}{两栏布局}
-  \begin{columns}[T]
-    \begin{column}{0.46\textwidth}
-      \begin{theorem}{费马大定理}{}
-        对整数 $n \geq 3$, 方程
-        \[
-          x^n + y^n = z^n
-        \]
-        无非平凡整数解。
-      \end{theorem}
-    \end{column}
-    \begin{column}{0.46\textwidth}
-      \begin{itemize}
-        \item 由 Andrew Wiles 于 1995 年证明
-        \item 核心工具: 模形式与椭圆曲线
-        \item 与谷山--志村猜想等价
-      \end{itemize}
-    \end{column}
-  \end{columns}
-\end{frame}
-
-\begin{frame}[fragile]{代码环境}
-  使用 \texttt{listings} 展示代码, 帧需标记为 \texttt{fragile}:
-
-  \begin{code}[Python]
-def fib(n):
-    """递归计算斐波那契数列"""
-    if n < 2:
-        return n
-    return fib(n - 1) + fib(n - 2)
-  \end{code}
-\end{frame}
-
-\begin{frame}{复杂公式}
-  \begin{align*}
-    \det
-    \begin{pmatrix}
-      a & b \\
-      c & d
-    \end{pmatrix}
-    &= ad - bc \\[6pt]
-    \underbrace{\bigboxplus_{i=1}^{n} V_i}_{\text{直和}}
-    &\cong V_1 \oplus V_2 \oplus \cdots \oplus V_n
-  \end{align*}
-
-  \pause
-
-  符号库测试: $\Hom(A, B)$, $\Aut(G)$, $\GL_n(\K)$, $\closure(A)$, $\supp(f)$。
-\end{frame}
-
-\begin{frame}{表格}
-  \begin{table}
-    \centering
-    \caption{各定理环境的配色对应}
-    \begin{tabular}{lcl}
-      \hline
-      环境 & 类别 & 主色 \\
-      \hline
-      定义 & 基础陈述 & \textcolor{mainblue}{蓝} \\
-      定理 & 推演结论 & \textcolor{mainred}{红} \\
-      引理 & 推演结论 & \textcolor{mainorange}{橙} \\
-      命题 & 推演结论 & \textcolor{mainpurple}{紫} \\
-      例 & 补充说明 & \textcolor{maingreen}{绿} \\
-      \hline
-    \end{tabular}
-  \end{table}
-\end{frame}
+\input{./Content/02_Test_Section/01_diagram}
+\input{./Content/02_Test_Section/02_columns}
+\input{./Content/02_Test_Section/03_code}
+\input{./Content/02_Test_Section/04_math}
+\input{./Content/02_Test_Section/05_table}

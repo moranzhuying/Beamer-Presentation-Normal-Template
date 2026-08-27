@@ -80,6 +80,8 @@
 \setbeamercolor{footline}{fg=textcolor!55!backgroundcolor}
 \setbeamercolor{item}{fg=accentcolor}
 \setbeamercolor{caption name}{fg=accentcolor}
+\setbeamercolor{section in head/foot}{fg=accentcolor}            % 导航: 当前节
+\setbeamercolor{section in head/foot shaded}{fg=textcolor!45!backgroundcolor}  % 导航: 其他节
 \setbeamercolor{section in toc}{fg=textcolor}
 \setbeamercolor{section in toc shaded}{fg=textcolor!60!backgroundcolor}
 \setbeamercolor{subsection in toc}{fg=textcolor!75!backgroundcolor}
@@ -120,17 +122,32 @@
 }
 \setbeamertemplate{frametitle}[yukina]
 
-% -------- 4.2 footline: [作者 ·] 短标题 | 页码/总页数 --------
+% -------- 4.2 footline: 进度条 + 章节导航 + 页码 --------
+% 三要素:
+%   1) 进度条   : 按 当前帧/总帧 比例填充主题色, 直观显示演示进度;
+%   2) 章节导航 : 所有 section 水平排列, 当前节高亮, 点击可跳转到对应节
+%                 (beamer 内置 \insertsectionnavigationhorizontal);
+%   3) 页码     : 右下角 n/N。
 % 作者 (beamer@shortauthor) 为空时自动省略, 不残留分隔符。
 \defbeamertemplate{footline}{yukina}{%
-  \begin{beamercolorbox}[wd=\textwidth,ht=2.4ex,dp=1.2ex,leftskip=10pt,rightskip=10pt]{footline}%
+  % -- 行 1: 进度条 --
+  \begin{beamercolorbox}[wd=\paperwidth,ht=2pt]{progress bar}%
+    \hbox to \paperwidth{%
+      \color{\yukinac{accentcolor}}%
+      \leaders\hrule height 2pt\hskip\dimexpr\paperwidth*\insertframenumber/\inserttotalframenumber\relax
+      \color{\yukinaline{accentcolor}}%
+      \leaders\hrule height 2pt\hfill
+    }%
+  \end{beamercolorbox}%
+  % -- 行 2: 章节导航 + 页码 --
+  \begin{beamercolorbox}[wd=\paperwidth,ht=3.6ex,dp=1.4ex,leftskip=8pt,rightskip=8pt]{footline}%
     \usebeamerfont{footline}\usebeamercolor[fg]{footline}%
-    \ifx\beamer@shortauthor\empty\else\insertshortauthor\hspace{0.6em}\textbar\hspace{0.6em}\fi
-    \insertshorttitle%
+    \insertsectionnavigationhorizontal{\dimexpr\paperwidth-70pt}{}{}%
     \hfill\insertframenumber/\inserttotalframenumber%
   \end{beamercolorbox}%
 }
 \setbeamertemplate{footline}[yukina]
+\setbeamerfont{section in head/foot}{size=\scriptsize}
 
 % -------- 4.3 导航符号: 演示时隐藏 --------
 \setbeamertemplate{navigation symbols}{}

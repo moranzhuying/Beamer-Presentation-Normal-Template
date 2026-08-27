@@ -7,12 +7,20 @@
 ```
 .
 ├── main.tex              # 主文件：加载主题/宏包，汇总各节帧
-├── beamerthemeYukina.sty # 主题：配色、字体、帧模板（frametitle/footline/itemize）
+├── beamerthemeYukina.sty # 主题：配色、字体、帧模板（进度条/导航/frametitle/itemize）
 ├── structure.sty         # 样式包：数学宏包、定理环境、符号库
 ├── quiver.sty            # 交换图支持（与「笔记写作」相同）
-├── Content/              # 内容目录（按节组织帧文件）
-│   ├── 01_Test_Section/  # 基础测试帧：文字/列表/公式/定理/引用
-│   └── 02_Test_Section/  # 进阶测试帧：交换图/两栏/代码/表格
+├── update_cwl.py         # 从 structure.sty 生成 TeXStudio 环境补全（可选）
+├── cwl/                  # 生成的补全文件 yukina-beamer.cwl
+├── Content/              # 内容目录（每节一个子目录，每帧一个文件）
+│   ├── 01_Test_Section/  # 基础测试节
+│   │   ├── index.tex     #   节汇总：只做 \input
+│   │   ├── 01_text_list.tex   #   文字与列表帧
+│   │   ├── 02_formula.tex     #   基础公式帧
+│   │   ├── 03_theorem.tex     #   定理环境与引用帧
+│   │   ├── 04_more_theorem.tex#   更多定理环境帧
+│   │   └── 05_exercise.tex    #   习题与提示帧
+│   └── 02_Test_Section/  # 进阶测试节（交换图/两栏/代码/公式/表格，同上拆分）
 └── Figures/              # 插图目录
 ```
 
@@ -64,6 +72,20 @@
 
 * `structure.sty` 模块 IV 的符号库（`\N \Z \Q \R \C`、`\Hom \End \Aut`、`\GL \SL \SO` 等）与「笔记写作」完全一致，直接复用；
 * `quiver.sty` 支持 q.uiver.app 导出的交换图。
+
+### 5. 底部进度条与章节导航
+
+页脚（footline）内置三要素：
+
+1. **进度条**：页面底部一条细线，按「当前帧/总帧」比例填充主题色，直观显示讲到哪里；
+2. **章节导航**：所有 `\section` 水平排列在页脚，**当前节高亮为主题色**，其余节灰色——**点击节名可直接跳转到该节**（Beamer 内置导航链接）；
+3. **页码**：右下角 n/N。
+
+作者信息在 `main.tex` 用 `\author{名字}` 设置后会自动出现在页脚与标题页，不设置则自动隐藏。
+
+### 6. 内容按帧拆分
+
+`Content/` 下每节一个子目录，**每帧一个 `.tex` 文件**，`index.tex` 只做 `\input` 汇总（与「笔记写作」的 Chapter → Section 结构同思路）。新增帧时：在节目录里新建文件，然后在 `index.tex` 加一行 `\input`。避免单文件过大，方便定位与维护。
 
 ## Beamer 使用要点
 

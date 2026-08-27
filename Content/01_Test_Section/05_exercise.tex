@@ -1,0 +1,20 @@
+% ================================================================
+% 05_exercise.tex — 习题与提示帧
+% ================================================================
+
+\begin{frame}{习题与提示}
+  \begin{exercise}{}{ex:limit}
+    证明: $\displaystyle\lim_{n \to \infty} \frac{n}{n+1} = 1$。
+  \end{exercise}
+
+  \pause
+
+  \begin{solution}
+    对任意 $\varepsilon > 0$, 取 $N > 1/\varepsilon$, 则当 $n > N$ 时有
+    $\left|\frac{n}{n+1} - 1\right| = \frac{1}{n+1} < \varepsilon$。
+  \end{solution}
+
+  \begin{hint}[思路提示]
+    使用 $\varepsilon$--$N$ 语言, 注意放缩 $\frac{1}{n+1} < \frac{1}{n}$。
+  \end{hint}
+\end{frame}

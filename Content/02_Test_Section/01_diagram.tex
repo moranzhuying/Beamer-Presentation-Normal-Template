@@ -1,0 +1,20 @@
+% ================================================================
+% 01_diagram.tex — 交换图帧
+% 注意: 含 tikz-cd 交换图的帧必须标记 [fragile]
+%       (beamer 与 tikz-cd 的 catcode 兼容要求)。
+% ================================================================
+
+\begin{frame}[fragile]{交换图}
+  范畴论中的泛性质 (universal property):
+
+  \[
+    \begin{tikzcd}
+      A \arrow[r, "f"] \arrow[rd, "g"'] & B \arrow[d, "h"] \\
+      & C
+    \end{tikzcd}
+  \]
+
+  \pause
+
+  当 $h$ 唯一存在时, 称 $h$ 为 $f$ 沿 $g$ 的余诱导态射。
+\end{frame}

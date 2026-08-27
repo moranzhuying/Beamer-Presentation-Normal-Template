@@ -1,0 +1,19 @@
+% ================================================================
+% 01_text_list.tex — 文字与列表帧 (overlay 分步)
+% ================================================================
+
+\begin{frame}{文字与列表}
+  一段普通的正文文字, 演示 Beamer 的基础排版效果。
+
+  \begin{itemize}
+    \item 一级条目, 使用 $\diamond$ 符号
+    \item<2-> 该条目通过 \texttt{<2->} 分步出现
+    \begin{itemize}
+      \item 二级条目, 使用 $\triangleright$ 符号
+      \begin{itemize}
+        \item 三级条目, 使用 $\ast$ 符号
+      \end{itemize}
+    \end{itemize}
+    \item<3-> 最后出现的条目
+  \end{itemize}
+\end{frame}
