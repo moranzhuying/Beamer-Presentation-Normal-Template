@@ -7,7 +7,7 @@
 ```
 .
 ├── main.tex              # 主文件：加载主题/宏包，汇总各节帧
-├── beamerthemeYukina.sty # 主题：配色、字体、帧模板（进度条/导航/frametitle/itemize）
+├── beamerthemeYukina.sty # 主题：配色、字体、帧模板（进度条/frametitle/itemize）
 ├── structure.sty         # 样式包：数学宏包、定理环境、符号库
 ├── quiver.sty            # 交换图支持（与「笔记写作」相同）
 ├── update_cwl.py         # 从 structure.sty 生成 TeXStudio 环境补全（可选）
@@ -89,7 +89,7 @@
 
 ### 7. 章节编号与层级
 
-支持三级结构，编号自动生成（目录、标题帧、页脚导航一致）：
+支持三级结构，编号自动生成（目录帧与标题帧一致）：
 
 ```latex
 \part{第一部分}          % 第 1 部分
@@ -120,7 +120,7 @@ Beamer 帧超出一页时**不会自动分页**，溢出内容会被裁掉。内
 ```
 
 * `\pause`：分步显示；`\only<2->` / `\uncover<1,3>`：按页（overlay）控制内容；
-* `\section` / `\subsection`：自动生成导航，每节开头自动插入节标题帧（不需要可删主题文件中 `\AtBeginSection`）。
+* `\part` / `\section` / `\subsection`：自动编号，每级开头自动插入标题帧（不需要某级可写对应 `\AtBeginXXX{}` 关闭）。
 
 ### 两个容易踩的坑
 
