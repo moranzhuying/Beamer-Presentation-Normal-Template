@@ -29,7 +29,7 @@
 
 ### 1. 中文 Beamer 演示
 
-基于 `ctexbeamer`（16:9，10pt），中文由 ctex 自动处理，西文主字体 TeX Gyre Termes（与「笔记写作」一致）。
+基于 `ctexbeamer`（16:9，10pt），中文由 ctex 自动处理，西文主字体为默认 Latin Modern（Computer Modern 系，与「笔记写作」一致）。
 
 ### 2. 深浅双模式切换
 

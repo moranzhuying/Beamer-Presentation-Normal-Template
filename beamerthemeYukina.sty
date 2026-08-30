@@ -91,9 +91,11 @@
 % [模块 III] 字体设置
 % ================================================================
 % 正文与数学用衬线 (贴近书籍观感, 与笔记模板一致);
-% 西文主字体 TeX Gyre Termes (Times 风格), 中文由 ctexbeamer 处理。
+% 西文使用默认 Latin Modern (Computer Modern 系, 等号无衬线);
+% 中文由 ctexbeamer 处理。如改用 Times 风格字体 (如 TeX Gyre Termes),
+% 注意其等号带衬线会使 \implies 等长双线箭头左端出现细黑线
+% (见 structure.sty 中 \Relbar 的历史修复说明)。
 \usefonttheme{serif}
-\setmainfont{TeX Gyre Termes}
 
 \setbeamerfont{frametitle}{size=\Large, series=\bfseries}
 \setbeamerfont{framesubtitle}{size=\normalsize, series=\mdseries}
