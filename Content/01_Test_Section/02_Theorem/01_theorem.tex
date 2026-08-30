@@ -12,10 +12,22 @@
   \begin{proof}
     由 $e^{i\theta}$ 的泰勒展开直接得到, 见 \ref{thm:euler} 的证明过程。
   \end{proof}
+	$g^{\prime}\left(x\right)=2x\implies g\left(x\right)=x^{2}+C$,其中$C\in\R$.
+\end{frame}
 
-  \begin{definition}{导数}{def:derivative}
-    \[
-      f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}
-    \]
-  \end{definition}
+\begin{frame}{理想的定义}
+	\begin{definition}{理想}{}
+		设$A$是环,$\mathfrak{a}$是$A$的加法子群.
+		\begin{enumerate}
+			\item 如果$A\mathfrak{a}\subseteq\mathfrak{a}$,则称$\mathfrak{a}$是$A$的左理想.
+			\item 如果$\mathfrak{a}A\subseteq\mathfrak{a}$,则称$\mathfrak{a}$是$A$的右理想.
+			\item 如果$A\mathfrak{a}\subseteq\mathfrak{a},\mathfrak{a}A\subseteq\mathfrak{a}$,则称$\mathfrak{a}$是$A$的双边理想.
+		\end{enumerate}
+	\end{definition}
+	熟知环$A$是典范的$\left(A,A\right)$-双模.照此观点,
+	\begin{itemize}
+		\item $A$的左理想是左$A$-模$A_{s}$的子模.
+		\item $A$的右理想是右$A$-模$A_{d}$的子模.
+		\item $A$的双边理想是$\left(A,A\right)$-双模$_{s}A_{d}$的子双模.
+	\end{itemize}
 \end{frame}

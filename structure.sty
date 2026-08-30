@@ -50,7 +50,18 @@
 \usepackage{tabularx}
 \usepackage{multirow}
 
-% -------- 1.5 代码环境 (listings) --------
+% -------- 1.5 数学箭头修复: \Relbar 用数学字体横线 --------
+% LaTeX 内核 \Relbar = \mathrel{=}, 而 = 的 mathcode 指向主文本字体 (family 0)。
+% 模板主字体为 TeX Gyre Termes 时, 其等号横线左端带衬线,
+% 导致 \implies 等长双线箭头的横线左端出现「两条细黑线」。
+% 修复: 用两条 TeX 规则 (\rule) 经 \vcenter 竖排, 构成与 \Rightarrow 对齐的无衬线双横线。
+\renewcommand{\Relbar}{%
+  \mathrel{\vcenter{\baselineskip3pt\lineskiplimit0pt
+    \hbox{\rule{1.1em}{0.8pt}}%
+    \hbox{\rule{1.1em}{0.8pt}}}}%
+}
+
+% -------- 1.6 代码环境 (listings) --------
 \usepackage{listings}
 
 
