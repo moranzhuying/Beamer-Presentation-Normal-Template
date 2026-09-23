@@ -1,7 +1,7 @@
 # 更新日志 (ChangeLog)
 
 **版本日期**: 2026-08-27
-**当前状态**: 模板 v1.0 已完成全部功能并推送 GitHub（Beamer-Template-By-Yukina）
+**当前状态**: 模板 v1.0 已完成全部功能并推送 GitHub（Beamer-Presentation-Normal-Template）
 
 ---
 

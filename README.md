@@ -1,4 +1,4 @@
-# Beamer-Presentation — 数学演示模板（Yukina 主题）
+# Beamer-Presentation-Normal-Template — 数学演示模板（Yukina 主题）
 
 与「笔记写作」模板配套的 Beamer 演示文稿模板，面向数学讲座与课程演示。继承「笔记写作」的学术配色、定理环境语义与数学符号库，并新增深浅双模式切换。
 
