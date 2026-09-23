@@ -24,16 +24,20 @@ update_cwl.py — 从 structure.sty 自动提取定理环境，更新 TeXStudio 
 
 改动 structure.sty 的环境定义后运行本脚本即可同步；TeXStudio 重启后生效。
 """
+import os
 import re
 import shutil
 import sys
 import pathlib
 
-STRUCTURE = pathlib.Path(__file__).resolve().parent / "structure.sty"
-PROJECT_CWL = pathlib.Path(__file__).resolve().parent / "cwl" / "yukina-beamer.cwl"
-DEFAULT_CWL = pathlib.Path(
-    r"%APPDATA%\texstudio\completion\user\yukina-beamer.cwl"
-)
+SCRIPT_DIR = pathlib.Path(__file__).resolve().parent
+
+STRUCTURE = SCRIPT_DIR / "structure.sty"
+PROJECT_CWL = SCRIPT_DIR / "cwl" / "yukina-beamer.cwl"
+
+# TeXStudio 补全文件位置：按 %APPDATA% 推导，避免写死本机用户名
+_APPDATA = os.environ.get("APPDATA") or (pathlib.Path.home() / "AppData" / "Roaming")
+DEFAULT_CWL = pathlib.Path(_APPDATA) / "texstudio" / "completion" / "user" / "yukina-beamer.cwl"
 
 # 编号环境: \yukina@defthm{env}{中文名}{主色}{计数器}
 THM_RE = re.compile(r"\\yukina@defthm\{([A-Za-z@]+)\}")
