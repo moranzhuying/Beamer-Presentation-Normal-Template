@@ -172,4 +172,4 @@ cp beamerthemeYukina.sty ~/texmf/tex/latex/beamer/themes/theme/
 
 ## 更新日志
 
-见 [ChangeLog.md](./ChangeLog.md)。
+见 [CHANGELOG.md](./CHANGELOG.md)。
