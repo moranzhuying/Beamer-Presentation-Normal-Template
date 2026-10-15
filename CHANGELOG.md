@@ -1,9 +1,19 @@
 # 更新日志 (ChangeLog)
 
-**版本日期**: 2026-10-06
+**版本日期**: 2026-10-10
 **当前状态**: 模板 v1.0 已完成全部功能并推送 GitHub（Beamer-Presentation-Normal-Template）
 
 ---
+
+## 2026-10-10 更新概览
+
+统一文档命名：更新日志由 `ChangeLog.md` 改名为 `CHANGELOG.md`，`README.md` 内的引用同步。
+
+### 优化与改进
+
+* **文档命名统一**
+    * `ChangeLog.md` → `CHANGELOG.md`，与家族其他模板一致。
+    * `README.md` 内对该文件的引用同步更新。
 
 ## 2026-10-06 更新概览
 
