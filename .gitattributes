@@ -1,2 +1,5 @@
+# 全库统一 LF（本机 core.autocrlf=true，务必靠本文件锁定，否则检出会被转成 CRLF）
+* text=auto eol=lf
+
 *.sh text eol=lf
 *.py text eol=lf
