@@ -54,6 +54,27 @@
 % -------- 1.5 代码环境 (listings) --------
 \usepackage{listings}
 
+% -------- 1.6 撇号（prime）与前字符的间距 --------
+% 背景：Computer Modern 的直立字体族（\mathbf 用的 cmbx、\mathbb、\mathscr 等）
+% 不带 italic correction，而数学斜体（cmmi）带。LaTeX 把撇号排在「前字符宽度 +
+% 斜体校正」之后，于是 \mathbf{f}' 的撇号会紧贴字母笔画，$f'$（斜体）却留有空隙，
+% 同一公式里粗体、斜体混排时撇号间距不一致。
+% 修法：重定义撇号的两个入口 —— 字符 '（内核中展开为 ^\bgroup\prim@s）与 \prime
+% —— 在撇号前插入 \primeKern。连续撇 f'' 只在首撇前留空、其后紧排，与原行为一致；
+% 单位用 mu（相对字号），故上下标中的间距自动按比例缩小。
+% 调整：改 \primeKern 的值即可（默认 1mu ≈ 0.056em；想更松可试 1.5mu 或 2mu）。
+% 代价：\prime 由字符变为宏，\bm{\prime} 这类对 \prime 取粗体的写法不再可靠
+% （本模板未使用）。
+\newcommand{\primeKern}{1mu}
+\let\yukina@primechar\prime
+\renewcommand{\prime}{\mkern\primeKern\yukina@primechar}
+\def\prim@s{\yukina@primechar\futurelet\@let@token\pr@m@s}
+\def\active@math@prime{^\bgroup\mkern\primeKern\prim@s}
+\begingroup
+  \catcode`\'=\active
+  \global\let'\active@math@prime
+\endgroup
+
 
 % ================================================================
 % [模块 II] 定理与证明环境
