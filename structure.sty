@@ -34,6 +34,10 @@
 \usepackage{amsmath, amsfonts, amssymb}
 \usepackage{bm}          % 粗体数学符号 (\bm)
 \usepackage{mathrsfs, stmaryrd, mathtools}
+% stmaryrd 没有粗体字库：不声明的话，\bm{} / \mathbf 落到 stmry 家族时会报
+% Font shape `U/stmry/b/n' undefined，\mathscr 一类的粗体随后悄悄退回常规字形。
+% 让粗体数学版本直接复用常规字形（原先只在 LaTeX_Notes/Algebra 里本地声明，现收进模板）。
+\SetSymbolFont{stmry}{bold}{U}{stmry}{m}{n}
 
 % -------- 1.2 绘图与交换图 --------
 \usepackage{tikz}
