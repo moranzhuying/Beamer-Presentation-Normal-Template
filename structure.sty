@@ -90,9 +90,11 @@
 % -------- 2.1 计数器 --------
 \newcounter{mathcount}[section]
 \renewcommand{\themathcount}{\thesection.\arabic{mathcount}}
+\resetcounteronoverlays{mathcount}
 
 \newcounter{exercisecount}[section]
 \renewcommand{\theexercisecount}{\thesection.\arabic{exercisecount}}
+\resetcounteronoverlays{exercisecount}
 
 % -------- 2.2 基础排版宏 --------
 % 顶部色条 + 标题行
@@ -332,10 +334,26 @@
 \newcommand{\Mo}{\operatorname{Mo}}      % 幺半群相关记号
 \newcommand{\Mag}{\operatorname{Mag}}    % 原群 (magma)
 \newcommand{\Core}{\operatorname{Core}}  % 核心/正规核
-\newcommand{\bigast}{\mathop{\vcenter{\hbox{\scalebox{1.5}{$\ast$}}}}\displaylimits}      % 大星号算子
-\newcommand{\bigtop}{\mathop{\vcenter{\hbox{\scalebox{1.5}{$\top$}}}}\displaylimits}      % 大 top 算子
-\newcommand{\bigbot}{\mathop{\vcenter{\hbox{\scalebox{1.5}{$\bot$}}}}\displaylimits}      % 大 bot 算子
-\newcommand{\bigboxplus}{\mathop{\vcenter{\hbox{\scalebox{1.5}{$\boxplus$}}}}\displaylimits} % 大盒加算子
+% 数学样式感知的大算子：见下方 ⚠️ 的定位说明，再按 1.5 倍缩放。旧写法把 \scalebox{1.5} 固定套在 \hbox 上，
+% 行内/上标/二重上标都恒为 7.50002pt，不随数学样式缩小。
+% display/text 与旧版完全一致（宽 7.50002pt），script / scriptscript 依次缩小。
+% ⚠️ \mathchoice 要放进 \mathop 的参数里，不能放在最外层：放最外层时
+%    \bigast 直接展开成 \mathchoice{…\mathop{…}…}，\limits 失去宿主，
+%    实测 \bigast\limits 报「Limit controls must follow a math operator」
+%    （Algebra 笔记里就有这种写法）；而放进 \vcenter 的 \hbox 又看不到
+%    当前样式（三档恒为 7.50002pt）。折中即下面这种写法。
+\newcommand{\yukina@bigopaux}[2]{%
+    \vcenter{\hbox{\scalebox{1.5}{$#1 #2$}}}}
+\newcommand{\yukina@bigop}[1]{%
+    \mathop{\mathchoice
+        {\yukina@bigopaux{\displaystyle}{#1}}%
+        {\yukina@bigopaux{\textstyle}{#1}}%
+        {\yukina@bigopaux{\scriptstyle}{#1}}%
+        {\yukina@bigopaux{\scriptscriptstyle}{#1}}}\displaylimits}
+\newcommand{\bigast}{\yukina@bigop{\ast}}          % 大星号算子
+\newcommand{\bigtop}{\yukina@bigop{\top}}          % 大 top 算子
+\newcommand{\bigbot}{\yukina@bigop{\bot}}          % 大 bot 算子
+\newcommand{\bigboxplus}{\yukina@bigop{\boxplus}}  % 大盒加算子
 \newcommand{\Shuffle}{\operatorname{Sf}} % shuffle 运算
 \newcommand{\Pol}{\operatorname{Pol}}    % 多项式空间
 \newcommand{\mult}{\operatorname{mult}}  % 重数

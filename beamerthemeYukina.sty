@@ -130,25 +130,39 @@
 %   行 1 进度条   : 按 当前帧/总帧 比例填充主题色。
 % 说明: 页脚不再显示章节导航 (如需要可恢复 \insertsectionnavigationhorizontal)。
 \newif\ifyukina@shown
+\newsavebox{\yukina@footmeta}
+\newsavebox{\yukina@footnumber}
+\newlength{\yukina@footwidth}
 \newcommand{\yukina@show}[1]{%
   \ifyukina@shown\ \textbar\ \fi
   #1\yukina@showntrue
 }
 \defbeamertemplate{footline}{yukina}{%
-  % -- 行 2: 作者 · 单位 · 日期 (居中) + 页码 (右) --
+  % -- 行 2: 元信息限宽居中，页码独立保留原字号与右边距 --
   \begin{beamercolorbox}[wd=\paperwidth,ht=2.6ex,dp=1.2ex]{footline}%
     \usebeamerfont{footline}\usebeamercolor[fg]{footline}%
-    \hbox to \paperwidth{%
-      \hskip 8pt
-      \hfil
+    \sbox{\yukina@footnumber}{\insertframenumber/\inserttotalframenumber}%
+    \sbox{\yukina@footmeta}{%
       \yukina@shownfalse
       \ifx\beamer@shortauthor\empty\else\yukina@show{\insertshortauthor}\fi
       \ifcsname beamer@shortinstitute\endcsname
         \ifx\beamer@shortinstitute\empty\else\yukina@show{\insertshortinstitute}\fi
       \fi
-      \ifx\insertshortdate\empty\else\yukina@show{\insertshortdate}\fi
-      \hfil
-      \insertframenumber/\inserttotalframenumber
+      \ifx\beamer@shortdate\empty\else\yukina@show{\insertshortdate}\fi
+    }%
+    % 两侧对称预留页码宽度，元信息仍相对整页居中；超宽时等比缩小。
+    \setlength{\yukina@footwidth}{\dimexpr\paperwidth-32pt-2\wd\yukina@footnumber\relax}%
+    \hbox to \paperwidth{%
+      \hskip\dimexpr16pt+\wd\yukina@footnumber\relax
+      \hbox to \yukina@footwidth{\hfil
+        \ifdim\wd\yukina@footmeta>\yukina@footwidth
+          \resizebox{\yukina@footwidth}{!}{\usebox{\yukina@footmeta}}%
+        \else
+          \usebox{\yukina@footmeta}%
+        \fi
+      \hfil}%
+      \hskip 8pt
+      \usebox{\yukina@footnumber}%
       \hskip 8pt
     }%
   \end{beamercolorbox}%
@@ -181,25 +195,34 @@
 \setbeamertemplate{enumerate subsubitem}{\insertsubsubenumlabel.}
 
 % -------- 4.5 标题页: 居中, 标题主色; 作者/日期/机构为空时自动省略 --------
-% 判断基于宏定义是否为空 (\ifx...\empty), 比 \ifstrempty 更可靠:
-% beamer 初始化时已调用 \author{} \date{}, 故对应宏一定存在。
+% 判空不能一律用 \ifx...\empty:
+%   \insertdate 、\insertinstitute 在字段为空时确为空宏 (beamer 显式 \def 成 {});
+%   但 \insertauthor 不是——beamer 把它定义成
+%       \def\inst{\beamer@insttitle}\def\and{\beamer@andtitle}#2
+%   即使 #2 为空, 宏体里那两个 \def 仍在, 所以 \ifx\insertauthor\empty 恒为假,
+%   作者为空时也照旧留出 1.2em 竖向间距。
+% 故三个字段统一改用「内容盒宽度是否为 0」判空; 测宽盒里把 \\ 置为 \relax 以容忍
+% 作者/机构里的 \and 换行 (空字段不含 \and, 宽度必为 0, 不会误判)。
+% 标题页只看完整字段 (作者/机构全名), 短字段仅决定页脚是否显示, 两者互不影响。
+\newsavebox{\yukina@titlefield}
 \defbeamertemplate{title page}{yukina}{%
   \centering
   \vfill
   {\usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle\par}%
-  \ifx\beamer@shortauthor\empty\else
+  \sbox{\yukina@titlefield}{\let\\\relax\usebeamerfont{author}\insertauthor}%
+  \ifdim\wd\yukina@titlefield>\z@
     \vskip 1.2em
     {\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\par}%
   \fi
-  \ifx\insertdate\empty\else
+  \sbox{\yukina@titlefield}{\let\\\relax\usebeamerfont{date}\insertdate}%
+  \ifdim\wd\yukina@titlefield>\z@
     \vskip 0.6em
     {\usebeamerfont{date}\usebeamercolor[fg]{date}\insertdate\par}%
   \fi
-  \ifcsname beamer@shortinstitute\endcsname
-    \ifx\beamer@shortinstitute\empty\else
-      \vskip 0.6em
-      {\usebeamerfont{institute}\usebeamercolor[fg]{institute}\insertinstitute\par}%
-    \fi
+  \sbox{\yukina@titlefield}{\let\\\relax\usebeamerfont{institute}\insertinstitute}%
+  \ifdim\wd\yukina@titlefield>\z@
+    \vskip 0.6em
+    {\usebeamerfont{institute}\usebeamercolor[fg]{institute}\insertinstitute\par}%
   \fi
   \vfill
 }
